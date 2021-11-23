@@ -1,46 +1,141 @@
-var animalContainer = document.getElementById("animal-info");
-var btn = document.getElementById("btn");
+var contactURLArray = [];
+var contactArray = [];
+var loadingContact = 0;
+var currentContactIndex = 0; 
 
-btn.addEventListener("click", function() {
-	var ourRequest = new XMLHttpRequest();
-	ourRequest.open('GET', 'https://mustang-index.azurewebsites.net/index.json');
-	ourRequest.onload = function() {
-		var ourData = JSON.parse(ourRequest.responseText);
-		renderHTML(ourData);
-	};
-	ourRequest.send();
-	if (pageCounter > 3) {
-		btn.classList.add("hide-me");
-	}
-});
+function viewCurrentContact() {
+    currentContact = contactArray[currentContactIndex];
+    console.log(currentContact);
+    document.getElementById("nameID").value = currentContact.preferredName;   
+    document.getElementById("emailID").value = currentContact.email;   
+    document.getElementById("cityID").value = currentContact.city;   
+    document.getElementById("stateID").value = currentContact.state;
+    document.getElementById("zipID").value = currentContact.zip;  
 
-ourRequest.onerror = function() {
-	print("Something went wrong.")
-};
+    document.getElementById("statusID").innerHTML = "Status: Viewing contact " + (currentContactIndex+1) + " of " + contactArray.length;
+}
 
-function renderHTML(data) {
-	var htmlString = "";
-	for (i = 0; i < data.length; i++) {
-		htmlString += "<p>" + data[i].name + " is a " + data[i].species + " that likes to eat ";
-		
-		for (ii = 0; ii< data[i].foods.likes.length; ii++) {
-			if (ii == 0) {
-				htmlString += data[i].foods.likes[ii];
-			} else {
-				htmlString += " and " + data[i].foods.likes[ii];
-			}
-		}
+function previous() {
+    if (currentContactIndex > 0) {
+        currentContactIndex--;
+    }
+    currentContact = contactArray[currentContactIndex];
+    viewCurrentContact();
+}
 
-		htmlString += ' and dislikes ';
-		for (ii = 0; ii< data[i].foods.dislikes.length; ii++) {
-			if (ii == 0) {
-				htmlString += data[i].foods.dislikes[ii];
-			} else {
-				htmlString += " and " + data[i].foods.dislikes[ii];
-			}
-		}
-		htmlString += '.</p>'
-	}
+function next() {
+    if (currentContactIndex < (contactArray.length-1)) {
+        currentContactIndex++;
+    }
+    currentContact = contactArray[currentContactIndex];
+    viewCurrentContact();
+}
 
-	animalContainer.insertAdjacentHTML('beforeend', htmlString);
+function add() {
+    console.log('add()');
+	contactArray.push({ "Name":currentContact.preferredName, "Email":currentContact.email, "City": currentContact.city, "State": currentContact.state, "Zip": currentContact.zip})
+}
+
+function remove() {
+    console.log('remove()');
+	const index = contactArray.indexOf(currentContact);
+	contactArray.splice(index, 1);
+}
+
+function update() {
+    console.log('update()');
+	/**Once I figure out how to take in info from add, simply splice out old info and put in new info in same place */
+}
+
+function zipFocusFunction() {
+    console.log('focusFunction()');
+}
+
+function zipBlurFunction() {
+    getPlace();
+}
+
+function keyPressed() {
+    console.log('keyPressed()');
+
+}
+
+function getPlace() {
+    var zip = document.getElementById("zipID").value
+    console.log("zip:"+zip);
+
+    console.log("function getPlace(zip) { ... }");
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var result = xhr.responseText;
+            console.log("result:"+result);
+            var place = result.split(', ');
+            if (document.getElementById("cityID").value == "")
+                document.getElementById("cityID").value = place[0];
+            if (document.getElementById("stateID").value == "")
+                document.getElementById("stateID").value = place[1];
+        }
+    }
+    xhr.open("GET", "getCityState.php?zip=" + zip);
+    xhr.send(null);
+}
+
+function initApplication() {
+    console.log('Mustang start.'); 
+    loadIndex();
+}
+
+function loadIndex() {
+    var indexRequest = new XMLHttpRequest();
+    indexRequest.open('GET', 'https://mustang-index.azurewebsites.net/index.json');
+    indexRequest.onload = function() {
+        console.log("Index JSON:" + indexRequest.responseText);
+        document.getElementById("indexID").innerHTML = indexRequest.responseText;
+        contactIndex = JSON.parse(indexRequest.responseText);
+        for (i=0; i<contactIndex.length; i++) {
+            contactURLArray.push(contactIndex[i].ContactURL);
+        }
+        console.log("ContactURLArray: " + JSON.stringify(contactURLArray));
+        loadContacts();
+    }
+    indexRequest.send();
+}
+
+function loadContacts() {
+    contactArray.length = 0;
+    loadingContact = 0;
+    if (contactURLArray.length > loadingContact) {
+        loadNextContact(contactURLArray[loadingContact]);
+    }
+}
+
+function loadNextContact(URL) {
+    console.log("URL: " + URL);
+    contactRequest = new XMLHttpRequest();
+    contactRequest.open('GET', URL);
+    contactRequest.onload = function() {
+        console.log(contactRequest.responseText);
+        var contact;
+        contact = JSON.parse(contactRequest.responseText);
+        console.log("Contact: " + contact.firstName);
+        contactArray.push(contact);
+
+        document.getElementById("contactsID").innerHTML = JSON.stringify(contactArray);
+
+        document.getElementById("statusID").innerHTML = "Status: Loading " + contact.firstName + " " + contact.lastName;
+
+        loadingContact++;
+        if (contactURLArray.length > loadingContact) {
+            loadNextContact(contactURLArray[loadingContact]);
+        }
+        else {
+            document.getElementById("statusID").innerHTML = "Status: Contacts Loaded (" + contactURLArray.length + ")";
+            viewCurrentContact()
+            console.log(contactArray);
+        }
+    }
+
+    contactRequest.send();
 }
