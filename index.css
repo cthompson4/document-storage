@@ -1,27 +1,25 @@
 body {
   display: block;
+  background-color: grey;
 }
 
-.contactForm {
-  display: none;
-  position: fixed;
-  bottom: 250px;
-  left: 450px;
-  border: 3px solid black;
-  background: gray;
+.checkPassword {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  border: 10px solid black;
+  background: lightblue;
   z-index: 9;
+  text-align: center;
 }
 
-label { 
-  display: table-cell; 
+h1 {
+  text-align: center;
 }
 
-.updateContactForm {
-  display: none;
-  position: fixed;
-  bottom: 250px;
-  left: 450px;
-  border: 3px solid black;
-  background: grey;
-  z-index: 7;
+h2 {
+  text-align: center;
 }
