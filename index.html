@@ -2,13 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="index.css" media="screen">
 	<title>Mustang</title>
-	<link rel="stylesheet" href="index.css">
 	<script src="index.js"></script>
 </head>
 <body onload="initApplication()">
 	<h1>Mustang</h1> 
+	<button type="button" onclick="importContacts()">Import Contacts</button><br><br>
+	<button type="button" onclick="saveContactsToServer()">Save Contacts</button>
+	<button type="button" onclick="loadContactsFromServer()">Load Contacts</button>
+	<button type="button" onclick="logContacts()">Log Contacts</button>
 		<table>
 		<tr>
 			<td>Name:</td>
@@ -42,15 +45,65 @@
 		</tr>
 		<tr>
 			<td><button type="button" onclick="previous()">Previous</button></td>
-			<td><button type="button" autofocus onclick="next()">Next</button>
-			</td>
+			<td><button type="button" autofocus onclick="next()">Next</button></td>
 		<tr>
-			<td><button type="button" onclick="add()">New</button></td>
+			<td><button type="button" onclick="openForm()">New</button></td>
 			<td><button type="button" onclick="remove()">Delete</button></td>
-			<td><button type="button" onclick="update()">Update</button>
-		</td>
+		</tr>
+		<tr>
+			<td><button type="button" onclick="openUpdateForm()">Update</button></td>
 		</tr>
 	</table>
+
+	<div class="contactForm" id="contactForm">
+		<form action="/index.js" class="form-container">
+		  <h1>New Contact</h1>
+
+		  <label for="firstName"><b>First Name:</b></label>
+		  <input id = "firstName" type="text" placeholder="Enter First Name" name="firstName" required><br>
+		  <label for="lastName"><b>Last Name:</b></label>
+		  <input id="lastName" type="text" placeholder="Enter Last Name" name="lastName" required><br>
+		  <label for="preferredName"><b>Preferred Name:</b></label>
+		  <input id="preferredName" type="text" placeholder="Enter Preferred Name" name="preferredName" required><br>
+		  <label for="email"><b>Email:</b></label>
+		  <input id="email" type="text" placeholder="Enter Email" name="email" required><br>
+		  <label for="phoneNumber"><b>Phone Number:</b></label>
+		  <input id="phoneNumber" type="text" placeholder="Enter Phone Number" name="phoneNumber" required><br>
+		  <label for="city"><b>City:</b></label>
+		  <input id="city" type="text" placeholder="Enter City" name="city" required><br>
+		  <label for="state"><b>State:</b></label>
+		  <input id="state" type="text" placeholder="Enter State" name="state" required><br>
+		  <label for="zip"><b>ZIP:</b></label>
+		  <input id="zip" type="text" placeholder="Enter ZIP" name="zip" required><br>
+	  
+		  <button type="button" class="subimt" onclick="closeForm(); add()">Submit</button>
+		</form>
+	  </div>
+
+	  <div class="updateContactForm" id="updateContactForm">
+		<form action="/index.js" class="form-container">
+		  <h1>Update Contact</h1>
+
+		  <label for="firstName"><b>First Name:</b></label>
+		  <input id = "ufirstName" type="text" placeholder="Enter First Name" name="firstName" required><br>
+		  <label for="lastName"><b>Last Name:</b></label>
+		  <input id="ulastName" type="text" placeholder="Enter Last Name" name="lastName" required><br>
+		  <label for="preferredName"><b>Preferred Name:</b></label>
+		  <input id="upreferredName" type="text" placeholder="Enter Preferred Name" name="preferredName" required><br>
+		  <label for="email"><b>Email:</b></label>
+		  <input id="uemail" type="text" placeholder="Enter Email" name="email" required><br>
+		  <label for="phoneNumber"><b>Phone Number:</b></label>
+		  <input id="uphoneNumber" type="text" placeholder="Enter Phone Number" name="phoneNumber" required><br>
+		  <label for="city"><b>City:</b></label>
+		  <input id="ucity" type="text" placeholder="Enter City" name="city" required><br>
+		  <label for="state"><b>State:</b></label>
+		  <input id="ustate" type="text" placeholder="Enter State" name="state" required><br>
+		  <label for="zip"><b>ZIP:</b></label>
+		  <input id="uzip" type="text" placeholder="Enter ZIP" name="zip" required><br>
+	  
+		  <button type="button" class="subimt" onclick="closeUpdateForm(); update()">Submit</button>
+		</form>
+	  </div>
 
 	<p id="statusID"></p>
 	<br><br><hr>

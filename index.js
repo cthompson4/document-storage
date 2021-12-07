@@ -15,6 +15,51 @@ function viewCurrentContact() {
     document.getElementById("statusID").innerHTML = "Status: Viewing contact " + (currentContactIndex+1) + " of " + contactArray.length;
 }
 
+function importContacts() {
+    console.log("importContacts()");
+    loadIndex(); 
+}
+
+function saveContactsToServer() {
+    console.log("saveContactsToServer()");
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Response: ' + this.responseText);
+            setStatus(this.responseText);
+        }
+    };
+    xmlhttp.open("POST", "save-contacts.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("contacts=" + JSON.stringify(contactArray));   
+}
+
+function loadContactsFromServer() {
+    console.log("loadContactsFromServer()");
+
+    // Clear the current contacts.
+    contactArray.length = 0;
+
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            contactArray = JSON.parse(this.responseText);
+            setStatus("Loaded contacts (" + contactArray.length + ")");
+
+            currentContactIndex = 0;
+            viewCurrentContact();
+        }
+    };
+
+    xmlhttp.open("GET", "load-contacts.php", true);
+    xmlhttp.send();   
+}
+
+function logContacts() {
+    console.log("ContactArray: ");
+    console.log(contactArray);
+}
+
 function previous() {
     if (currentContactIndex > 0) {
         currentContactIndex--;
@@ -31,9 +76,26 @@ function next() {
     viewCurrentContact();
 }
 
+function openForm() {
+    document.getElementById("contactForm").style.display = "block";
+  }
+
+function closeForm() {
+    document.getElementById("contactForm").style.display = "none";
+  }
+
+function openUpdateForm() {
+    document.getElementById("updateContactForm").style.display = "block";
+  }
+
+function closeUpdateForm() {
+    document.getElementById("updateContactForm").style.display = "none";
+  }
+
 function add() {
     console.log('add()');
-	contactArray.push({ "Name":currentContact.preferredName, "Email":currentContact.email, "City": currentContact.city, "State": currentContact.state, "Zip": currentContact.zip})
+    let newContact = { "firstName":document.getElementById("firstName").value, "lastName":document.getElementById("lastName").value, "preferredName": document.getElementById("preferredName").value, "email": document.getElementById("email").value, "phoneNumber": document.getElementById("phoneNumber").value, "city": document.getElementById("city").value, "state": document.getElementById("state").value, "zip": document.getElementById("zip").value };
+	contactArray.push(newContact);
 }
 
 function remove() {
@@ -44,7 +106,9 @@ function remove() {
 
 function update() {
     console.log('update()');
-	/**Once I figure out how to take in info from add, simply splice out old info and put in new info in same place */
+    const index = contactArray.indexOf(currentContact);
+    let updatedContact = { "firstName":document.getElementById("ufirstName").value, "lastName":document.getElementById("ulastName").value, "preferredName": document.getElementById("upreferredName").value, "email": document.getElementById("uemail").value, "phoneNumber": document.getElementById("uphoneNumber").value, "city": document.getElementById("ucity").value, "state": document.getElementById("ustate").value, "zip": document.getElementById("uzip").value };
+	contactArray.splice(index, 1, updatedContact);
 }
 
 function zipFocusFunction() {
@@ -61,7 +125,7 @@ function keyPressed() {
 }
 
 function getPlace() {
-    var zip = document.getElementById("zipID").value
+    var zip = document.getElementById("zipID").value;
     console.log("zip:"+zip);
 
     console.log("function getPlace(zip) { ... }");
@@ -132,10 +196,11 @@ function loadNextContact(URL) {
         }
         else {
             document.getElementById("statusID").innerHTML = "Status: Contacts Loaded (" + contactURLArray.length + ")";
-            viewCurrentContact()
+            viewCurrentContact();
             console.log(contactArray);
         }
     }
 
     contactRequest.send();
 }
+
