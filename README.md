@@ -1,4 +1,4 @@
-Code for COMPUTER SCIENCE 24700 Project: Mustang
+Code for COMPUTER SCIENCE 24700 Project: Final Project
 
 Name: Connor Thompson
 
