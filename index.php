@@ -14,9 +14,9 @@
 	</p1>
 	<p2 style="margin-right: 100px; float: right">
 		<h2>Upload a new file:</h2>
-		<form action="upload.php" method="post" enctype="multipart/form-data">
-			Select file to upload:
-			<input type="file" name="fileToUpload" id="fileToUpload">
+		<form method="post" action="upload.php" enctype="multipart/form-data">
+			<label>File Upload</label>
+			<input type="file" name="file" id="file">
 			<input type="submit" value="Upload File" name="submit">
 			</form>
 	</p2>
@@ -34,3 +34,21 @@
 
 </body>
 </html>
+
+<?php
+$files = scandir("uploads");
+ 
+for ($a = 2; $a < count($files); $a++)
+{
+    ?>
+    <p>
+        <?php echo $files[$a]; ?>
+        <a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>" style="color: blue;">
+            Download
+        </a>
+		<a href="delete.php?name=uploads/<?php echo $files[$a]; ?>" style="color: red;">
+    	Delete
+		</a>
+    </p>
+    <?php
+}

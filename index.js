@@ -6,4 +6,11 @@ function checkPassword() {
     else {
         document.getElementById("password2").replaceWith("Wrong Password!");
     }
+    textBox = document.getElementById("password");
+    button = document.getElementById("submit");
+    textBox.addEventListener("keydown", function (event) {
+        if (event.keyCode == 13) {
+            button.click();
+        }
+    });
 }

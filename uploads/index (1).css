@@ -1,0 +1,28 @@
+
+.contactForm {
+  display: none;
+  position: fixed;
+  bottom: 250px;
+  left: 450px;
+  border: 3px solid black;
+  background: gray;
+  z-index: 9;
+}
+
+label { 
+  display: table-cell; 
+}
+
+.updateContactForm {
+  display: none;
+  position: fixed;
+  bottom: 250px;
+  left: 450px;
+  border: 3px solid black;
+  background: grey;
+  z-index: 7;
+}
+
+body {
+  display: block;
+}
