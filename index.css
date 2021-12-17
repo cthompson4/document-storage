@@ -4,7 +4,7 @@ body {
 }
 
 .checkPassword {
-  display: block;
+  display: none;
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -22,4 +22,15 @@ h1 {
 
 h2 {
   text-align: center;
+}
+
+table {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.userpasslist {
+  margin-top: 80%;
+  margin-right: auto;
+  margin-left: auto;
 }

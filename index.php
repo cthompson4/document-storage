@@ -6,7 +6,7 @@
 	<title>Document Storage</title>
 	<script src="index.js"></script>
 </head>
-<body>
+<body onload="passwordStart()">
 	<h1>Document Storage</h1>
 	<p1 style="float: left; margin-left: 100px">
 		<h2>Current files within database:</h2>
@@ -21,14 +21,24 @@
 			</form>
 	</p2>
 
-
+	<div class="userpasslist" id ="userpasslist">
+		<h2>List of users and passwords: </h2>
+		<p id="list"></p>
+	</div>
+	
 	<div class="checkPassword" id="checkPassword">
 		<form action="/index.js" class="form-container">
-		  <h1>Enter the password:</h1>
-		  <p>For testing purposes, the password is password.</p>
-		  <label id = "password2" for="password"><b>Password:</b></label>
-		  <input id = "password" type="text" placeholder="Enter the password" name="password" required><br>	  
-		  <button type="button" class="submit" onclick="checkPassword()">Submit</button>
+		<h1>Document Storage Website - Login</h1>
+		<br>
+		  <h2>Enter username and password:</h1>
+		  <p>For testing purposes, the username is admin and the password is password.</p>
+		  <table>
+		  <tr><td><label id = "username2" for="username"><b>Username:</b></label></td>
+		  <td><input id = "username" type="text" placeholder="Enter the username" name="username" required><br></td></tr>
+		  <tr><td><label id = "password2" for="password"><b>Password:</b></label></td>
+		  <td><input id = "password" type="text" placeholder="Enter the password" name="password" required><br></td></tr>	
+		  </table>  
+		  <button type="button" class="submit" onclick="checkUserPass()">Submit</button>
 		</form>
 	  </div>
 
