@@ -30,7 +30,26 @@ table {
 }
 
 .userpasslist {
-  margin-top: 80%;
   margin-right: auto;
   margin-left: auto;
+  margin-top: 30%;
+}
+
+.helpBox {
+  display: none;
+  position: absolute;
+  bottom: 50%;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  border: 10px solid black;
+  background: blue;
+  z-index: 9;
+  text-align: center;
+}
+
+.help {
+  margin: 0 auto;
+  display: block;
+  width: 10%;
 }

@@ -4,7 +4,7 @@ Name: Connor Thompson
 
 Email: connorjthompson@lewisu.edu
 
-Files required: index.html, index.css, index.js, web.config
+Files required: index.php, index.css, index.js, web.config, index.json, uploads folder, upload.php, delete.php
 
 Based on material provided for class at Lewis University.
 

@@ -8,9 +8,34 @@
 </head>
 <body onload="passwordStart()">
 	<h1>Document Storage</h1>
+	<button type="button" class="help" id="help" onclick="helpBox()">Help</button>
+	<div class="helpBox" id="helpBox">
+	<h3>Overview: This website stores documents within it that can be accessed from different machines.</h2>
+	<h3>It utilizes a JSON based login system. It must currently be manually updated, but future updates could make it possible to do through the website itself.</h2>
+	<h3>To upload a file, just select a file and hit upload. You will need to re-enter the login information after each upload.</h2>
+	<button type="button" class="closehelp" onclick="closeHelpBox()">Close</button>
+	</div>
 	<p1 style="float: left; margin-left: 100px">
 		<h2>Current files within database:</h2>
-	
+		<!--The PHP tutorials by the YouTube channel Adnan Afzal were a great help, so some credit to them. -->
+		<?php
+	$files = scandir("uploads");
+ 
+	for ($a = 2; $a < count($files); $a++)
+	{
+    	?>
+    	<p>
+        	<?php echo $files[$a]; ?>
+        	<a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>" style="color: blue;">
+            	Download
+        	</a>
+			<a href="delete.php?name=uploads/<?php echo $files[$a]; ?>" style="color: red;">
+    		Delete
+			</a>
+    	</p>
+    	<?php
+	}
+	?>
 	</p1>
 	<p2 style="margin-right: 100px; float: right">
 		<h2>Upload a new file:</h2>
@@ -44,21 +69,3 @@
 
 </body>
 </html>
-
-<?php
-$files = scandir("uploads");
- 
-for ($a = 2; $a < count($files); $a++)
-{
-    ?>
-    <p>
-        <?php echo $files[$a]; ?>
-        <a href="uploads/<?php echo $files[$a]; ?>" download="<?php echo $files[$a]; ?>" style="color: blue;">
-            Download
-        </a>
-		<a href="delete.php?name=uploads/<?php echo $files[$a]; ?>" style="color: red;">
-    	Delete
-		</a>
-    </p>
-    <?php
-}

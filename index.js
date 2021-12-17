@@ -6,16 +6,24 @@ function passwordStart() {
     pullJSON();
 }
 
+function helpBox() {
+    document.getElementById("helpBox").style.display = "block";
+}
+
+function closeHelpBox() {
+    document.getElementById("helpBox").style.display = "none";
+}
+
 function checkUserPass() {
     userpass = jsonArray[currentplace];
-    username = userpass.Username;
-    password = userpass.Password;
-    username = "admin";
-    password = "password";
-    if (document.getElementById("password").value == password && document.getElementById("username").value == username) {
+    username1 = jsonArray[0].Username;
+    password1 = jsonArray[0].Password;
+    username2 = jsonArray[1].Username;
+    password2 = jsonArray[1].Password;
+    if ((document.getElementById("password").value == password1 && document.getElementById("username").value == username1) || (document.getElementById("password").value == password2 && document.getElementById("username").value == username2)) {
         document.getElementById("checkPassword").style.display = "none";
     }
-    else if (document.getElementById("username").value != username && document.getElementById("password").value != password) {
+    else if (document.getElementById("username").value != (username1 || username2) && document.getElementById("password").value != (password1 || password2)) {
         var target1 = document.getElementById("username2");
         var target2 = document.getElementById("password2");
         var newtarget1 = target1.cloneNode(true);
@@ -25,7 +33,7 @@ function checkUserPass() {
         target1.parentNode.replaceChild(newtarget1, target1);
         target2.parentNode.replaceChild(newtarget2, target2);
     }
-    else if (document.getElementById("password").value != password && document.getElementById("username").value == username){
+    else if (document.getElementById("username").value == (username1 || username2) && document.getElementById("password").value != (password1 || password2))  {
         var target1 = document.getElementById("username2");
         var target2 = document.getElementById("password2");
         var newtarget1 = target1.cloneNode(true);
@@ -35,7 +43,7 @@ function checkUserPass() {
         target1.parentNode.replaceChild(newtarget1, target1);
         target2.parentNode.replaceChild(newtarget2, target2);
     }
-    else if (document.getElementById("password").value == password && document.getElementById("username").value != username){
+    else if (document.getElementById("username").value != (username1 || username2) && document.getElementById("password").value == (password1 || password2)) {
         var target1 = document.getElementById("username2");
         var target2 = document.getElementById("password2");
         var newtarget1 = target1.cloneNode(true);
@@ -64,7 +72,7 @@ function pullJSON() {
         document.getElementById("list").innerHTML = jsonRequest.responseText;
         jsonIndex = JSON.parse(jsonRequest.responseText);
         for (i=0; i<jsonIndex.length; i++) {
-            jsonArray.push(jsonIndex[i].ContactURL);
+            jsonArray.push(jsonIndex[i]);
         }
     }
     jsonRequest.send();
